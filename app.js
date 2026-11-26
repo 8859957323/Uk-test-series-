@@ -73,6 +73,7 @@ if (testButton) {
           <h3>${test.name}</h3>
           <p>प्रश्न: ${test.questions}</p>
           <p>समय: ${test.duration}</p>
+   html += `
           <button onclick="startDemoTest()">Start Test</button>
         </div>;
     });
