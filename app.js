@@ -36,3 +36,39 @@ function buy(name,price){
 document.getElementById("year").textContent=new Date().getFullYear();
 const cfg=window.UKTS_CONFIG||{};let n=(cfg.whatsappNumber||"").replace(/\D/g,"");if(n.length>=10)document.getElementById("contactLink").href=`https://wa.me/${n}`;
 render();
+const availableTests = [
+  {
+    name: "UK General Knowledge Test",
+    questions: 10,
+    duration: "10 मिनट"
+  },
+  {
+    name: "Math Practice Test",
+    questions: 10,
+    duration: "10 मिनट"
+  },
+  {
+    name: "Reasoning Practice Test",
+    questions: 10,
+    duration: "10 मिनट"
+  }
+];
+
+const testButton = document.querySelector("#studentDashboard button");
+
+if (testButton) {
+  testButton.onclick = function () {
+    let html = "<h2>Available Tests</h2>";
+
+    availableTests.forEach((test, index) => {
+      html += <div style="background:white;padding:12px;margin:10px;border-radius:8px">
+        <h3>${test.name}</h3>
+        <p>प्रश्न: ${test.questions}</p>
+        <p>समय: ${test.duration}</p>
+        <button onclick="alert('टेस्ट जल्द शुरू होगा')">Start Test</button>
+      </div>;
+    });
+
+    document.getElementById("studentDashboard").insertAdjacentHTML("beforeend", html);
+  };
+}
