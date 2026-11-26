@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UK Test Series | All Competitive Exams</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="logo">UK</span><div><b>UK TEST SERIES</b><small>Prepare • Practice • Succeed</small></div></div>
+  <button class="menu" onclick="document.querySelector('nav').classList.toggle('show')">☰</button>
+  <nav><a href="#tests">Test Series</a><a href="#plans">Plans</a><a href="#features">Features</a><a href="#contact">Contact</a></nav>
+</header>
+<section class="hero">
+  <div><span class="tag">ALL COMPETITIVE EXAMS</span><h1>आपकी सरकारी नौकरी की तैयारी, अब एक ही जगह!</h1>
+  <p>SSC, Railway, Banking, Police, Teaching और अन्य परीक्षाओं के लिए ऑनलाइन Mock Tests.</p>
+  <a class="btn" href="#tests">टेस्ट देखें</a></div>
+  <div class="hero-card"><div class="big">UK</div><b>Practice. Improve. Succeed.</b><p>अपनी तैयारी को दें नई दिशा।</p></div>
+</section>
+<main>
+<section id="tests"><div class="section-head"><div><span class="tag">PRACTICE ZONE</span><h2>Popular Test Series</h2></div><span class="muted">Demo catalogue</span></div>
+<div class="cards" id="testCards"></div></section>
+<section id="plans" class="plans"><span class="tag">SIMPLE PRICING</span><h2>अपनी तैयारी का प्लान चुनें</h2>
+<div class="cards">
+ <article class="plan"><h3>Free Practice</h3><div class="price">₹0</div><p>शुरुआती अभ्यास के लिए</p><ul><li>Free sample tests</li><li>Instant demo result</li></ul><button class="btn light" onclick="startTest('free')">Free Test दें</button></article>
+ <article class="plan featured"><span class="tag">POPULAR</span><h3>All Exams Pass</h3><div class="price">₹499<span>/ 3 months</span></div><p>एक ही पास में सभी टेस्ट सीरीज</p><ul><li>All listed mock tests</li><li>Answer explanations (जब उपलब्ध हों)</li><li>Performance review</li></ul><button class="btn" onclick="buyPass()">Buy Pass</button></article>
+</div><p class="notice">कीमत उदाहरण के लिए है। वास्तविक कीमत और भुगतान चालू करने से पहले Admin द्वारा तय किए जाने चाहिए।</p>
+</section>
+<section id="features"><span class="tag">WHY UK TEST SERIES</span><h2>आपको क्या मिलेगा?</h2><div class="features"><div>⏱️ <b>Timed Tests</b><small>समय सीमा के साथ अभ्यास</small></div><div>📊 <b>Instant Results</b><small>स्कोर और सही/गलत उत्तर</small></div><div>📚 <b>Multiple Exams</b><small>एक जगह कई परीक्षाएँ</small></div><div>📱 <b>Mobile Friendly</b><small>मोबाइल पर आसान उपयोग</small></div></div></section>
+<section id="contact" class="contact"><h2>UK Test Series से संपर्क करें</h2><p>Payment या course से जुड़ी जानकारी के लिए संपर्क करें।</p><a id="contactLink" class="btn light" href="#">WhatsApp पर संपर्क करें</a></section>
+</main>
+<footer>© <span id="year"></span> UK Test Series. All rights reserved.</footer>
+<div id="modal" class="modal" aria-hidden="true"><div class="modal-box"><button class="close" onclick="closeTest()">✕</button><div id="testArea"></div></div></div>
+<script src="config.js"></script><script src="app.js"></script>
+</body></html>
