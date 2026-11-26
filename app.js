@@ -72,3 +72,26 @@ if (testButton) {
     document.getElementById("studentDashboard").insertAdjacentHTML("beforeend", html);
   };
 }
+window.startDemoTest = function () {
+  const area = document.getElementById("studentDashboard");
+
+  area.innerHTML = 
+    <h2>UK General Knowledge Test</h2>
+    <p>प्रश्न 1: भारत की राजधानी क्या है?</p>
+    <label><input type="radio" name="q1" value="a"> मुंबई</label><br>
+    <label><input type="radio" name="q1" value="b"> नई दिल्ली</label><br>
+    <label><input type="radio" name="q1" value="c"> जयपुर</label><br><br>
+
+    <button onclick="submitDemoTest()">Submit Test</button>
+    <p id="testResult"></p>
+  ;
+};
+
+window.submitDemoTest = function () {
+  const answer = document.querySelector('input[name="q1"]:checked');
+
+  document.getElementById("testResult").innerText =
+    answer && answer.value === "b"
+      ? "सही जवाब! आपके 1 में से 1 अंक।"
+      : "गलत जवाब। सही उत्तर: नई दिल्ली। आपके 0 अंक।";
+};
