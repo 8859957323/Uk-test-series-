@@ -36,7 +36,14 @@
   <div id="studentDashboard" style="display:block;padding:20px;background:#f1f5f9;border-radius:12px;margin:15px">
   <h2>Student Dashboard</h2>
   <h3>UK Test Series</h3>
-  <button onclick="alert('Tests जल्द उपलब्ध होंगे')">Available Tests</button>
+  <button onclick="document.getElementById('testList').style.display='block'">Available Tests</button>
+
+<div id="testList" style="display:none;background:white;padding:15px;margin:10px">
+<h3>Available Tests</h3>
+<p>1. UK General Knowledge Test</p>
+<p>2. Math Practice Test</p>
+<p>3. Reasoning Practice Test</p>
+</div>
   <button onclick="alert('आपके रिजल्ट यहाँ दिखेंगे')">My Results</button>
   <button onclick="alert('आपकी प्रोफाइल')">My Profile</button>
   </div>
