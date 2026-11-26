@@ -38,6 +38,7 @@ document.getElementById("loginBtn").onclick = async () => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
     document.getElementById("authMessage").innerText = "Login सफल!";
+    document.getElementById("studentDashboard").style.display = "block";
   } catch (e) {
     document.getElementById("authMessage").innerText = e.message;
   }
