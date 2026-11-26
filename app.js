@@ -34,8 +34,15 @@ function buy(name,price){
  document.getElementById("modal").classList.add("open");
 }
 document.getElementById("year").textContent=new Date().getFullYear();
-const cfg=window.UKTS_CONFIG||{};let n=(cfg.whatsappNumber||"").replace(/\D/g,"");if(n.length>=10)document.getElementById("contactLink").href=`https://wa.me/${n}`;
+const cfg = window.UKTS_CONFIG || {};
+let n = (cfg.whatsappNumber || "").replace(/\D/g, "");
+
+if (n.length >= 10) {
+  document.getElementById("contactLink").href = https://wa.me/${n};
+}
+
 render();
+
 const availableTests = [
   {
     name: "UK General Knowledge Test",
@@ -88,6 +95,7 @@ window.startDemoTest = function () {
 
 window.submitDemoTest = function () {
   const answer = document.querySelector('input[name="q1"]:checked');
+
   document.getElementById("testResult").innerText =
     answer && answer.value === "b"
       ? "सही जवाब! 1 अंक।"
