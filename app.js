@@ -2,21 +2,40 @@ const tests = [
   {id:"ssc",name:"SSC Foundation Mock Test",exam:"SSC",questions:20,price:99,level:"Beginner"},
   {id:"rail",name:"Railway Group D Test Pack",exam:"Railway",questions:25,price:149,level:"Practice"},
   {id:"police",name:"Police Constable Mock Test",exam:"Police",questions:20,price:99,level:"Practice"},
-  {id:"bank",name:"Banking Prelims Practice",exam:"Banking",questions:20,price:199,level:"Practice"},
-  {id:"teach",name:"Teaching Eligibility Test",exam:"Teaching",questions:20,price:149,level:"Practice"},
-  {id:"all",name:"All Exams Mega Pack",exam:"All Exams",questions:50,price:499,level:"Combo"}
+  {id:"bank",name:"Banking Foundation Test",exam:"Banking",questions:20,price:99,level:"Beginner"},
+  {id:"teaching",name:"Teaching Exam Mock Test",exam:"Teaching",questions:20,price:99,level:"Practice"},
+  {id:"all",name:"All Exams Practice Pack",exam:"All Exams",questions:50,price:199,level:"Advanced"}
 ];
 
 const sample = [
-  {q:"भारत की राजधानी क्या है?",o:["मुंबई","नई दिल्ली","जयपुर","लखनऊ"],a:1},
-  {q:"15 × 4 कितना होगा?",o:["45","50","60","65"],a:2},
-  {q:"भारतीय संविधान कब लागू हुआ?",o:["15 अगस्त 1947","26 जनवरी 1950","2 अक्टूबर 1950","26 नवंबर 1949"],a:1},
-  {q:"सौरमंडल का सबसे बड़ा ग्रह कौन-सा है?",o:["पृथ्वी","मंगल","बृहस्पति","शुक्र"],a:2},
-  {q:"एक किलोमीटर में कितने मीटर होते हैं?",o:["100","500","1000","1500"],a:2}
+  {
+    q:"भारत की राजधानी क्या है?",
+    options:["मुंबई","नई दिल्ली","कोलकाता","चेन्नई"],
+    answer:1
+  },
+  {
+    q:"भारत का राष्ट्रीय पशु कौन है?",
+    options:["शेर","हाथी","बाघ","घोड़ा"],
+    answer:2
+  },
+  {
+    q:"15 + 10 कितना होता है?",
+    options:["20","25","30","35"],
+    answer:1
+  },
+  {
+    q:"भारत का राष्ट्रीय पक्षी कौन है?",
+    options:["तोता","मोर","कबूतर","हंस"],
+    answer:1
+  },
+  {
+    q:"एक सप्ताह में कितने दिन होते हैं?",
+    options:["5","6","7","8"],
+    answer:2
+  }
 ];
 
 let current = [];
-let testName = "";
 
 function render() {
   const cards = document.getElementById("testCards");
@@ -24,126 +43,118 @@ function render() {
 
   cards.innerHTML = tests.map(t => 
     <article class="test">
-      <span class="pill">${t.exam}</span>
       <h3>${t.name}</h3>
-      <p>${t.questions} Questions • ${t.level}</p>
-      <b>₹${t.price}</b><br>
-      <button class="btn" onclick="buyTest('${t.id}')">Buy Test</button>
-      <button class="btn light" onclick="startTest('${t.id}')">Demo</button>
+      <p>Exam: ${t.exam}</p>
+      <p>Questions: ${t.questions}</p>
+      <p>Level: ${t.level}</p>
+      <p>Price: ₹${t.price}</p>
+      <button onclick="startTest('${t.id}')">Demo Test</button>
+      <button onclick="buyTest('${t.id}')">Buy Test</button>
     </article>
   ).join("");
 }
 
-function startTest(id) {
-  const test = tests.find(t => t.id === id);
-  testName = test ? test.name : "Free Sample Test";
+window.startTest = function(id) {
   current = sample;
+  const modal = document.getElementById("modal");
+  const area = document.getElementById("testArea");
 
-  let html = 
-    <h2>${testName}</h2>
-    <p class="muted">यह एक छोटा demo test है।</p>
-    <form id="quiz">
-  ;
+  if (!modal || !area) {
+    alert("Test area नहीं मिला।");
+    return;
+  }
+
+  let html = <h2>UK Test Series - Mock Test</h2>;
 
   current.forEach((q, i) => {
-    html += <div>
-      <h3>${i+1}. ${q.q}</h3>;
-
-    q.o.forEach((option, j) => {
-      html += 
-        <label class="option">
-          <input type="radio" name="q${i}" value="${j}">
-          ${option}
-        </label>;
-    });
-
-    html += </div>;
+    html += 
+      <div class="question">
+        <h3>Q${i + 1}. ${q.q}</h3>
+        ${q.options.map((op, j) => 
+          <label>
+            <input type="radio" name="q${i}" value="${j}">
+            ${op}
+          </label><br>
+        ).join("")}
+      </div>
+    ;
   });
 
   html += 
-    <button class="btn" type="submit">Submit Test</button>
-    </form>
+    <button onclick="submitTest()">Submit Test</button>
     <div id="score"></div>
   ;
 
-  document.getElementById("testArea").innerHTML = html;
-
-  document.getElementById("quiz").onsubmit = function(e) {
-    e.preventDefault();
-
-    let score = 0;
-
-    current.forEach((q, i) => {
-      const answer = document.querySelector(
-        input[name="q${i}"]:checked
-      );
-
-      if (answer && Number(answer.value) === q.a) {
-        score++;
-      }
-    });
-
-    document.getElementById("score").innerHTML =
-      <div class="result">
-        <h3>आपका स्कोर: ${score}/${current.length}</h3>
-        <p>यह demo result है।</p>
-      </div>;
-  };
-
-  document.getElementById("modal").classList.add("open");
-}
-
-window.startDemoTest = function() {
-  startTest("free");
+  area.innerHTML = html;
+  modal.classList.add("open");
 };
 
-function closeTest() {
-  document.getElementById("modal").classList.remove("open");
-}
+window.submitTest = function() {
+  let score = 0;
 
-function buyTest(id) {
-  const t = tests.find(x => x.id === id);
-  if (t) buy(t.name, t.price);
-}
+  current.forEach((q, i) => {
+    const answer = document.querySelector(
+      input[name="q${i}"]:checked
+    );
 
-function buyPass() {
-  buy("All Exams Pass (3 months)", 499);
-}
+    if (answer && Number(answer.value) === q.answer) {
+      score++;
+    }
+  });
 
-function buy(name, price) {
-  const c = window.UKTS_CONFIG || {};
-  const msg = नमस्ते, मैंने ${name} के लिए ₹${price} भुगतान किया है। कृपया मेरा भुगतान verify करें।;
-  const wa = (c.whatsappNumber || "").replace(/\D/g, "");
-  const upi = c.upiId || "अभी सेट नहीं है";
+  const result = document.getElementById("score");
+  if (result) {
+    result.innerHTML = 
+      <h2>आपका रिजल्ट</h2>
+      <p>सही उत्तर: ${score} / ${current.length}</p>
+    ;
+  }
+};
 
-  document.getElementById("testArea").innerHTML = 
+window.closeTest = function() {
+  const modal = document.getElementById("modal");
+  if (modal) modal.classList.remove("open");
+};
+
+window.buyTest = function(id) {
+  const test = tests.find(t => t.id === id);
+  if (test) buy(test.name, test.price);
+};
+
+window.buyPass = function() {
+  buy("All Exams Pass", 199);
+};
+
+window.buy = function(name, price) {
+  const area = document.getElementById("testArea");
+  const modal = document.getElementById("modal");
+
+  if (!area || !modal) {
+    alert("Payment area नहीं मिला।");
+    return;
+  }
+
+  area.innerHTML = 
     <h2>Payment Instructions</h2>
-    <p><b>${name}</b></p>
-    <p>राशि: <b>₹${price}</b></p>
-    <div class="result">
-      <p>UPI ID</p>
-      <h3>${upi}</h3>
-    </div>
-    <p class="notice">
-      भुगतान के बाद WhatsApp पर transaction reference भेजें।
-      Admin verify करने के बाद ही access देगा।
-    </p>
-    ${wa.length >= 10
-      ? <a class="btn" target="_blank" rel="noopener"
-          href="https://wa.me/${wa}?text=${encodeURIComponent(msg)}">
-          WhatsApp पर भुगतान की जानकारी भेजें
-        </a>
-      : ""}
+    <p>Test: ${name}</p>
+    <h3>Amount: ₹${price}</h3>
+    <p>UPI ID: shubham1875@ptyes</p>
+    <button onclick="window.open('upi://pay?pa=shubham1875@ptyes&pn=UK%20Test%20Series&am=${price}&cu=INR')">
+      Pay with UPI
+    </button>
+    <p>Payment करने के बाद WhatsApp पर screenshot भेजें।</p>
+    <a href="https://wa.me/918859957323" target="_blank">
+      WhatsApp पर संपर्क करें
+    </a>
   ;
 
-  document.getElementById("modal").classList.add("open");
-}
+  modal.classList.add("open");
+};
 
 const year = document.getElementById("year");
 if (year) year.textContent = new Date().getFullYear();
-
 const cfg = window.UKTS_CONFIG || {};
-const n = (cfg.whatsappNumber || "").replace(/\D/g, "");
+const n = String(cfg.whatsappNumber || "8859957323").replace(/\D/g, "");
 const contact = document.getElementById("contactLink");
 
 if (contact && n.length >= 10) {
