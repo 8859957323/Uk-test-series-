@@ -102,3 +102,18 @@ window.submitDemoTest = function () {
       ? "सही जवाब! 1 अंक।"
       : "गलत जवाब! सही उत्तर: नई दिल्ली।";
 };
+window.showAvailableTests = function () {
+  let html = "<h2>Available Tests</h2>";
+
+  availableTests.forEach((test, index) => {
+    html += 
+      <div style="background:white;padding:12px;margin:10px;border-radius:8px">
+        <h3>${test.name}</h3>
+        <p>प्रश्न: ${test.questions}</p>
+        <p>समय: ${test.duration}</p>
+        <button onclick="startDemoTest()">Start Test</button>
+      </div>;
+  });
+
+  document.getElementById("studentDashboard").innerHTML = html;
+};
