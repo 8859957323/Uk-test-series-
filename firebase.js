@@ -16,3 +16,29 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+document.getElementById("signupBtn").onclick = async () => {
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+    document.getElementById("authMessage").innerText = "Registration सफल!";
+  } catch (e) {
+    document.getElementById("authMessage").innerText = e.message;
+  }
+};
+
+document.getElementById("loginBtn").onclick = async () => {
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    document.getElementById("authMessage").innerText = "Login सफल!";
+  } catch (e) {
+    document.getElementById("authMessage").innerText = e.message;
+  }
+};
