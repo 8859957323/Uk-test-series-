@@ -135,7 +135,8 @@ function buy(name, price) {
         </a>
       : ""}
   ;
- document.getElementById("modal").classList.add("open");
+
+  document.getElementById("modal").classList.add("open");
 }
 
 const year = document.getElementById("year");
