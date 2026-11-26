@@ -8,31 +8,11 @@ const tests = [
 ];
 
 const sample = [
-  {
-    q:"भारत की राजधानी क्या है?",
-    options:["मुंबई","नई दिल्ली","कोलकाता","चेन्नई"],
-    answer:1
-  },
-  {
-    q:"भारत का राष्ट्रीय पशु कौन है?",
-    options:["शेर","हाथी","बाघ","घोड़ा"],
-    answer:2
-  },
-  {
-    q:"15 + 10 कितना होता है?",
-    options:["20","25","30","35"],
-    answer:1
-  },
-  {
-    q:"भारत का राष्ट्रीय पक्षी कौन है?",
-    options:["तोता","मोर","कबूतर","हंस"],
-    answer:1
-  },
-  {
-    q:"एक सप्ताह में कितने दिन होते हैं?",
-    options:["5","6","7","8"],
-    answer:2
-  }
+  {q:"भारत की राजधानी क्या है?",options:["मुंबई","नई दिल्ली","कोलकाता","चेन्नई"],answer:1},
+  {q:"भारत का राष्ट्रीय पशु कौन है?",options:["शेर","हाथी","बाघ","घोड़ा"],answer:2},
+  {q:"15 + 10 कितना है?",options:["20","25","30","35"],answer:1},
+  {q:"भारत का राष्ट्रीय पक्षी कौन है?",options:["तोता","मोर","कबूतर","हंस"],answer:1},
+  {q:"एक सप्ताह में कितने दिन होते हैं?",options:["5","6","7","8"],answer:2}
 ];
 
 let current = [];
@@ -66,11 +46,11 @@ window.startTest = function(id) {
 
   let html = <h2>UK Test Series - Mock Test</h2>;
 
-  current.forEach((q, i) => {
+  current.forEach((q,i) => {
     html += 
       <div class="question">
-        <h3>Q${i + 1}. ${q.q}</h3>
-        ${q.options.map((op, j) => 
+        <h3>Q${i+1}. ${q.q}</h3>
+        ${q.options.map((op,j) => 
           <label>
             <input type="radio" name="q${i}" value="${j}">
             ${op}
@@ -92,60 +72,42 @@ window.startTest = function(id) {
 window.submitTest = function() {
   let score = 0;
 
-  current.forEach((q, i) => {
-    const answer = document.querySelector(
-      input[name="q${i}"]:checked
-    );
-
-    if (answer && Number(answer.value) === q.answer) {
-      score++;
-    }
+  current.forEach((q,i) => {
+    const answer = document.querySelector(input[name="q${i}"]:checked);
+    if (answer && Number(answer.value) === q.answer) score++;
   });
 
-  const result = document.getElementById("score");
-  if (result) {
-    result.innerHTML = 
-      <h2>आपका रिजल्ट</h2>
-      <p>सही उत्तर: ${score} / ${current.length}</p>
-    ;
-  }
+  document.getElementById("score").innerHTML =
+    <h2>आपका रिजल्ट</h2><p>सही उत्तर: ${score} / ${current.length}</p>;
 };
 
 window.closeTest = function() {
-  const modal = document.getElementById("modal");
-  if (modal) modal.classList.remove("open");
+  document.getElementById("modal")?.classList.remove("open");
 };
 
 window.buyTest = function(id) {
   const test = tests.find(t => t.id === id);
-  if (test) buy(test.name, test.price);
+  if (test) window.buy(test.name,test.price);
 };
 
 window.buyPass = function() {
-  buy("All Exams Pass", 199);
+  window.buy("All Exams Pass",499);
 };
 
-window.buy = function(name, price) {
+window.buy = function(name,price) {
   const area = document.getElementById("testArea");
   const modal = document.getElementById("modal");
 
-  if (!area || !modal) {
-    alert("Payment area नहीं मिला।");
-    return;
-  }
+  if (!area || !modal) return;
 
   area.innerHTML = 
     <h2>Payment Instructions</h2>
     <p>Test: ${name}</p>
     <h3>Amount: ₹${price}</h3>
     <p>UPI ID: shubham1875@ptyes</p>
-    <button onclick="window.open('upi://pay?pa=shubham1875@ptyes&pn=UK%20Test%20Series&am=${price}&cu=INR')">
-      Pay with UPI
-    </button>
-    <p>Payment करने के बाद WhatsApp पर screenshot भेजें।</p>
-    <a href="https://wa.me/918859957323" target="_blank">
-      WhatsApp पर संपर्क करें
-    </a>
+    <a href="upi://pay?pa=shubham1875@ptyes&pn=UK%20Test%20Series&am=${price}&cu=INR">Pay with UPI</a>
+    <p>Payment के बाद WhatsApp पर screenshot भेजें।</p>
+    <a href="https://wa.me/918859957323" target="_blank">WhatsApp पर संपर्क करें</a>
   ;
 
   modal.classList.add("open");
@@ -153,8 +115,9 @@ window.buy = function(name, price) {
 
 const year = document.getElementById("year");
 if (year) year.textContent = new Date().getFullYear();
+
 const cfg = window.UKTS_CONFIG || {};
-const n = String(cfg.whatsappNumber || "8859957323").replace(/\D/g, "");
+const n = String(cfg.whatsappNumber || "8859957323").replace(/\D/g,"");
 const contact = document.getElementById("contactLink");
 
 if (contact && n.length >= 10) {
