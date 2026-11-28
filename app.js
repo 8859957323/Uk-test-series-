@@ -106,7 +106,8 @@ let answers = [];
 let currentQuestion = 0;
 let timeLeft = 20 * 60;
 let timerId = null;
-let testFinished = false;\nlet activeExamName = "General";
+let testFinished = false;
+let activeExamName = "General";
 
 const closeButton = `<button onclick="closeTest()">Close</button>`;
 
