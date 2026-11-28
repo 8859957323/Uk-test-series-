@@ -254,8 +254,19 @@ window.startTest = function(id, testNo) {
   const test = tests.find(t => t.id === id) || {};
   const topics = testTopics[id] || testTopics.all;
   const topic = topics[(Number(testNo) || 1) - 1] || 'मिश्रित अभ्यास';
-  current = (examQuestionSets[id] || questions).slice(0, 100);
-  if (current.length < 100) current = current.concat(makeExtraPracticeQuestions(id === 'bank' ? 301 : id === 'teaching' ? 401 : 501)).slice(0, 100);
+  const baseQuestions = (examQuestionSets[id] || questions).slice();
+  const setNumber = Math.max(1, Math.min(20, Number(testNo) || 1));
+  const extraSeed = ({ssc:1, rail:101, police:201, bank:301, teaching:401, all:501}[id] || 601) + setNumber * 83;
+  const extraQuestions = makeExtraPracticeQuestions(extraSeed);
+  const needed = Math.max(0, 100 - baseQuestions.length);
+  current = baseQuestions.concat(extraQuestions.slice(0, needed)).slice(0, 100);
+  // अलग-अलग टेस्ट में प्रश्नों का क्रम भी अलग रखें।
+  let shuffleSeed = extraSeed;
+  for (let i = current.length - 1; i > 0; i--) {
+    shuffleSeed = (shuffleSeed * 9301 + 49297) % 233280;
+    const j = shuffleSeed % (i + 1);
+    const temp = current[i]; current[i] = current[j]; current[j] = temp;
+  }
   activeExamName = (test.exam || 'General') + ' - टेस्ट ' + (Number(testNo) || 1) + ': ' + topic;
   answers = new Array(current.length).fill(null);
   currentQuestion = 0;
