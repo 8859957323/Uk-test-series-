@@ -254,7 +254,7 @@ window.startTest = function(id, testNo) {
   const test = tests.find(t => t.id === id) || {};
   const topics = testTopics[id] || testTopics.all;
   const topic = topics[(Number(testNo) || 1) - 1] || 'मिश्रित अभ्यास';
-  current = (examQuestionSets[id] || questions).slice();
+  current = (examQuestionSets[id] || questions).slice(0, 100);
   if (current.length < 100) current = current.concat(makeExtraPracticeQuestions(id === 'bank' ? 301 : id === 'teaching' ? 401 : 501)).slice(0, 100);
   activeExamName = (test.exam || 'General') + ' - टेस्ट ' + (Number(testNo) || 1) + ': ' + topic;
   answers = new Array(current.length).fill(null);
