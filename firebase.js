@@ -1,6 +1,6 @@
 // Firebase Authentication + Realtime Database connection for UK Test Series
 const firebaseConfig = {
-  apiKey: "AIzaSyBojognGKdWAkeWwQlpQ-OMvvqaT5SG4a",
+  apiKey: "API key 2",
   authDomain: "uk-test-series-de95c.firebaseapp.com",
   projectId: "uk-test-series-de95c",
   databaseURL: "https://uk-test-series-de95c-default-rtdb.firebaseio.com",
