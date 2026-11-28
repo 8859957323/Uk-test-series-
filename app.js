@@ -250,31 +250,17 @@ window.startTest = function(id) {
 function getExplanation(q) {
   const question = q.q;
   let m;
-  if ((m = question.match(/^(\\d+) \\+ (\\d+) = \\?$/))) {
-    return `${m[1]} और ${m[2]} को जोड़ने पर ${Number(m[1]) + Number(m[2])} मिलता है।`;
-  }
-  if ((m = question.match(/^(\\d+) - (\\d+) = \\?$/))) {
-    return `${m[1]} में से ${m[2]} घटाने पर ${Number(m[1]) - Number(m[2])} मिलता है।`;
-  }
-  if ((m = question.match(/^(\\d+) × (\\d+) = \\?$/))) {
-    return `${m[1]} × ${m[2]} = ${Number(m[1]) * Number(m[2])}।`;
-  }
-  if ((m = question.match(/^(\\d+) का (\\d+)% कितना है\\?$/))) {
-    return `${m[1]} × ${m[2]} ÷ 100 = ${Number(m[1]) * Number(m[2]) / 100}।`;
-  }
-  if ((m = question.match(/^(\\d+) ÷ (\\d+) = \\?$/))) {
-    return `${m[1]} को ${m[2]} से भाग देने पर ${Number(m[1]) / Number(m[2])} मिलता है।`;
-  }
-  if ((m = question.match(/^श्रृंखला (\\d+), (\\d+), (\\d+), (\\d+), \\? में अगली संख्या\\?$/))) {
+  if ((m = question.match(/^(\d+) \+ (\d+) = \?$/))) return m[1] + " + " + m[2] + " = " + (Number(m[1]) + Number(m[2])) + "।";
+  if ((m = question.match(/^(\d+) - (\d+) = \?$/))) return m[1] + " - " + m[2] + " = " + (Number(m[1]) - Number(m[2])) + "।";
+  if ((m = question.match(/^(\d+) × (\d+) = \?$/))) return m[1] + " × " + m[2] + " = " + (Number(m[1]) * Number(m[2])) + "।";
+  if ((m = question.match(/^(\d+) का (\d+)% कितना है\?$/))) return m[1] + " का " + m[2] + "% = " + (Number(m[1]) * Number(m[2]) / 100) + "।";
+  if ((m = question.match(/^(\d+) ÷ (\d+) = \?$/))) return m[1] + " ÷ " + m[2] + " = " + (Number(m[1]) / Number(m[2])) + "।";
+  if ((m = question.match(/^श्रृंखला (\d+), (\d+), (\d+), (\d+), \? में अगली संख्या\?$/))) {
     const step = Number(m[2]) - Number(m[1]);
-    return `हर बार ${step} जोड़ा जा रहा है, इसलिए अगली संख्या ${Number(m[4]) + step} है।`;
+    return "हर बार " + step + " जोड़ा जा रहा है; अगली संख्या " + (Number(m[4]) + step) + " है।";
   }
-  if ((m = question.match(/^(\\d+) और (\\d+) का औसत कितना है\\?$/))) {
-    return `औसत = (${m[1]} + ${m[2]}) ÷ 2 = ${(Number(m[1]) + Number(m[2])) / 2}।`;
-  }
-  if ((m = question.match(/^(\\d+) किमी\\/घंटा की चाल से (\\d+) घंटे में दूरी कितनी होगी\\?$/))) {
-    return `दूरी = चाल × समय = ${m[1]} × ${m[2]} = ${Number(m[1]) * Number(m[2])} किमी।`;
-  }
+  if ((m = question.match(/^(\d+) और (\d+) का औसत कितना है\?$/))) return "औसत = (" + m[1] + " + " + m[2] + ") ÷ 2 = " + ((Number(m[1]) + Number(m[2])) / 2) + "।";
+  if ((m = question.match(/^(\d+) किमी\/घंटा की चाल से (\d+) घंटे में दूरी कितनी होगी\?$/))) return "दूरी = चाल × समय = " + m[1] + " × " + m[2] + " = " + (Number(m[1]) * Number(m[2])) + " किमी।";
   const explanations = {
     "संविधान में मौलिक अधिकार किस भाग में हैं?":"मौलिक अधिकार संविधान के भाग III (अनुच्छेद 12 से 35) में दिए गए हैं।",
     "'जय जवान जय किसान' नारा किसने दिया?":"यह नारा प्रधानमंत्री लाल बहादुर शास्त्री ने 1965 में दिया था।",
