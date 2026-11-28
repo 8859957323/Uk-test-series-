@@ -1,10 +1,10 @@
 const tests = [
-  {id:"ssc",name:"SSC Foundation Mock Test",exam:"SSC",questions:20,price:99,level:"Beginner"},
-  {id:"rail",name:"Railway Group D Test Pack",exam:"Railway",questions:25,price:149,level:"Practice"},
-  {id:"police",name:"Police Constable Mock Test",exam:"Police",questions:20,price:99,level:"Practice"},
-  {id:"bank",name:"Banking Foundation Test",exam:"Banking",questions:20,price:99,level:"Beginner"},
-  {id:"teaching",name:"Teaching Exam Mock Test",exam:"Teaching",questions:20,price:99,level:"Practice"},
-  {id:"all",name:"All Exams Practice Pack",exam:"All Exams",questions:50,price:199,level:"Advanced"}
+  {id:"ssc",name:"SSC Foundation Mock Test",exam:"SSC",questions:100,price:99,level:"Beginner"},
+  {id:"rail",name:"Railway Group D Test Pack",exam:"Railway",questions:100,price:149,level:"Practice"},
+  {id:"police",name:"Police Constable Mock Test",exam:"Police",questions:100,price:99,level:"Practice"},
+  {id:"bank",name:"Banking Foundation Test",exam:"Banking",questions:100,price:99,level:"Beginner"},
+  {id:"teaching",name:"Teaching Exam Mock Test",exam:"Teaching",questions:100,price:99,level:"Practice"},
+  {id:"all",name:"All Exams Practice Pack",exam:"All Exams",questions:100,price:199,level:"Advanced"}
 ];
 
 // फिलहाल अभ्यास के लिए 20 सामान्य ज्ञान के डेमो प्रश्न।
@@ -76,7 +76,60 @@ const examQuestions = {
     ["भारत के राष्ट्रपति का कार्यकाल कितने वर्ष?",["4","5","6","7"],1]
   ]
 };
+
 const examQuestionSets = Object.fromEntries(Object.entries(examQuestions).map(([id, rows]) => [id, rows.map(([q, options, answer]) => ({q, options, answer}))]));
+
+// 80 अतिरिक्त गणित/रीजनिंग अभ्यास प्रश्न हर परीक्षा के लिए।
+function makeExtraPracticeQuestions(seed) {
+  const out = [];
+  for (let i = 0; i < 80; i++) {
+    const n = i + seed;
+    let q, answer;
+    switch (i % 8) {
+      case 0: {
+        const a = 18 + n * 2, b = 7 + n;
+        answer = a + b; q = `${a} + ${b} = ?`; break;
+      }
+      case 1: {
+        const a = 120 + n * 3, b = 15 + n;
+        answer = a - b; q = `${a} - ${b} = ?`; break;
+      }
+      case 2: {
+        const a = 3 + (n % 12), b = 4 + (n % 9);
+        answer = a * b; q = `${a} × ${b} = ?`; break;
+      }
+      case 3: {
+        const base = 100 + (n % 10) * 20, p = [5, 10, 20, 25, 50][n % 5];
+        answer = base * p / 100; q = `${base} का ${p}% कितना है?`; break;
+      }
+      case 4: {
+        const divisor = 2 + (n % 9), quotient = 8 + n;
+        answer = divisor * quotient; q = `${answer} ÷ ${divisor} = ?`; break;
+      }
+      case 5: {
+        const first = 2 + n, diff = 3 + (n % 6);
+        answer = first + diff * 4; q = `श्रृंखला ${first}, ${first+diff}, ${first+2*diff}, ${first+3*diff}, ? में अगली संख्या?`; break;
+      }
+      case 6: {
+        const a = 12 + n, b = 8 + (n % 7);
+        answer = (a + b) / 2; q = `${a} और ${b} का औसत कितना है?`; break;
+      }
+      default: {
+        const hours = 2 + (n % 6), speed = 30 + (n % 8) * 5;
+        answer = hours * speed; q = `${speed} किमी/घंटा की चाल से ${hours} घंटे में दूरी कितनी होगी?`; break;
+      }
+    }
+    const choices = [answer, answer + 3 + (n % 5), Math.max(0, answer - (2 + (n % 4))), answer + 10 + (n % 7)];
+    const shift = n % 4;
+    const options = choices.map((_, j) => choices[(j + shift) % 4]).map(String);
+    out.push({q, options, answer: options.indexOf(String(answer))});
+  }
+  return out;
+}
+for (const [id, seed] of [["ssc", 1], ["rail", 101], ["police", 201]]) {
+  examQuestionSets[id].push(...makeExtraPracticeQuestions(seed));
+}
+
 
 const questions = [
   {q:"भारत की राजधानी क्या है?",options:["मुंबई","नई दिल्ली","कोलकाता","चेन्नई"],answer:1},
@@ -118,7 +171,7 @@ function render() {
     <article class="test">
       <h3>${t.name}</h3>
       <p>Exam: ${t.exam}</p>
-      <p>Questions: ${t.questions} (Demo में 20)</p>
+      <p>Questions: ${t.questions} (Demo Practice)</p>
       <p>Level: ${t.level}</p>
       <p>Price: ₹${t.price}</p>
       <button class="btn" onclick="startTest('${t.id}')">Demo Test</button>
