@@ -247,6 +247,37 @@ window.startTest = function(id) {
   }, 1000);
 };
 
+function getExplanation(q) {
+  const question = q.q;
+  let m;
+  if ((m = question.match(/^(\\d+) \\+ (\\d+) = \\?$/))) {
+    return `${m[1]} और ${m[2]} को जोड़ने पर ${Number(m[1]) + Number(m[2])} मिलता है।`;
+  }
+  if ((m = question.match(/^(\\d+) - (\\d+) = \\?$/))) {
+    return `${m[1]} में से ${m[2]} घटाने पर ${Number(m[1]) - Number(m[2])} मिलता है।`;
+  }
+  if ((m = question.match(/^(\\d+) × (\\d+) = \\?$/))) {
+    return `${m[1]} × ${m[2]} = ${Number(m[1]) * Number(m[2])}।`;
+  }
+  if ((m = question.match(/^(\\d+) का (\\d+)% कितना है\\?$/))) {
+    return `${m[1]} × ${m[2]} ÷ 100 = ${Number(m[1]) * Number(m[2]) / 100}।`;
+  }
+  if ((m = question.match(/^(\\d+) ÷ (\\d+) = \\?$/))) {
+    return `${m[1]} को ${m[2]} से भाग देने पर ${Number(m[1]) / Number(m[2])} मिलता है।`;
+  }
+  if ((m = question.match(/^श्रृंखला (\\d+), (\\d+), (\\d+), (\\d+), \\? में अगली संख्या\\?$/))) {
+    const step = Number(m[2]) - Number(m[1]);
+    return `हर बार ${step} जोड़ा जा रहा है, इसलिए अगली संख्या ${Number(m[4]) + step} है।`;
+  }
+  if ((m = question.match(/^(\\d+) और (\\d+) का औसत कितना है\\?$/))) {
+    return `औसत = (${m[1]} + ${m[2]}) ÷ 2 = ${(Number(m[1]) + Number(m[2])) / 2}।`;
+  }
+  if ((m = question.match(/^(\\d+) किमी\\/घंटा की चाल से (\\d+) घंटे में दूरी कितनी होगी\\?$/))) {
+    return `दूरी = चाल × समय = ${m[1]} × ${m[2]} = ${Number(m[1]) * Number(m[2])} किमी।`;
+  }
+  return "यह सामान्य ज्ञान का तथ्य-आधारित प्रश्न है। सही उत्तर ऊपर दिखाया गया है।";
+}
+
 window.submitTest = function(autoSubmit = false) {
   if (testFinished) return;
   if (!autoSubmit && !confirm("क्या आप टेस्ट जमा करना चाहते हैं?")) return;
@@ -272,6 +303,7 @@ window.submitTest = function(autoSubmit = false) {
         <b>Q${i+1}. ${q.q}</b>
         <p>आपका उत्तर: ${answers[i] === null ? "नहीं दिया" : q.options[answers[i]]}</p>
         <p style="color:#16835d">सही उत्तर: ${q.options[q.answer]}</p>
+        <p><b>व्याख्या:</b> ${getExplanation(q)}</p>
       </div>
     `).join("")}
     <button class="btn" onclick="closeTest()">बंद करें</button>
