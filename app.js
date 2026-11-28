@@ -212,9 +212,8 @@ function renderQuestion() {
     </div>
     <div style="display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;margin-top:18px">
       <button class="btn light" onclick="previousQuestion()" ${currentQuestion === 0 ? "disabled" : ""}>पिछला</button>
-      ${currentQuestion < current.length - 1
-        ? '<button class="btn" onclick="nextQuestion()">अगला प्रश्न</button>'
-        : '<button class="btn" onclick="submitTest()">टेस्ट जमा करें</button>'}
+      ${currentQuestion < current.length - 1 ? '<button class="btn" onclick="nextQuestion()">अगला प्रश्न</button>' : ''}
+      <button class="btn" style="background:#c62828" onclick="submitTest()">टेस्ट जमा करें</button>
     </div>
     <p style="font-size:13px;color:#64748b">उत्तर चुने बिना भी अगले प्रश्न पर जा सकते हैं।</p>
   `;
