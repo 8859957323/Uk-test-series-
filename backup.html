@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>UK Test Series - Question Backup</title>
+<style>body{font-family:Arial,sans-serif;max-width:760px;margin:30px auto;padding:20px;line-height:1.6;color:#172033}.card{border:1px solid #dbe3ee;border-radius:14px;padding:20px}button{background:#126b50;color:white;border:0;border-radius:9px;padding:13px 18px;font-size:16px}small{color:#586579}</style></head>
+<body><div class="card"><h2>UK Test Series - Question Backup</h2>
+<p>यह पेज मौजूदा परीक्षा कार्डों के 20-20 टेस्ट का JSON बैकअप डाउनलोड करेगा। मौजूदा वेबसाइट या टेस्ट में कोई बदलाव नहीं होगा।</p>
+<p><b>ध्यान दें:</b> इसमें वेबसाइट के मौजूदा प्रश्न और कोड से बनने वाले अभ्यास प्रश्न होंगे। यह आधिकारिक syllabus coverage या प्रश्नों की गुणवत्ता का प्रमाण नहीं है।</p>
+<button id="downloadBackup" type="button">JSON Backup डाउनलोड करें</button><p id="status" role="status">बटन दबाने पर बैकअप तैयार होगा।</p>
+<small>डाउनलोड हुई फ़ाइल निजी रखें। इसे Firebase में आयात करने से पहले जाँचेंगे।</small></div>
+<div id="testCards" hidden></div><div id="year" hidden></div><a id="contactLink" hidden></a><div id="modal" hidden><div id="testArea"></div></div>
+<script src="app.js"></script>
+<script>
+document.getElementById("downloadBackup").addEventListener("click", function () {
+ const status=document.getElementById("status");
+ const seedMap={ssc:1,rail:101,police:201,bank:301,teaching:401,all:501,ukpsc_upper:601,ukpsc_lower:701,ukpsc_roaro:801,ukpsc_lecturer:901,ukpsc_assistant_prof:1001,ukpsc_ae:1101,ukpsc_je:1201,uksssc_grad:1301,uksssc_inter:1401,uksssc_junior_asst:1501,uksssc_patwari:1601,uksssc_vdo:1701,uksssc_accountant:1801,uksssc_forest:1901,uk_police_constable:2001,uk_police_si:2101,uk_fireman:2201,uk_excise:2301,uk_jail:2401,uksssc_steno:2501,uksssc_technical:2601,uk_agri:2701,uk_utet:2801,uk_lt:2901};
+ try {
+  const output={schemaVersion:1,exportedAt:new Date().toISOString(),source:"UK Test Series app.js",note:"Existing question content snapshot; review before production use.",demoQuestions:questions,exams:{}};
+  for(const test of tests){
+   const topics=testTopics[test.id]||testTopics.all;
+   output.exams[test.id]={name:test.name,exam:test.exam,price:test.price,tests:{}};
+   for(let testNo=1;testNo<=20;testNo++){
+    const base=(examQuestionSets[test.id]||questions).slice();
+    const seed=(seedMap[test.id]||3001)+testNo*83;
+    const extra=makeExtraPracticeQuestions(seed);
+    const rows=base.concat(extra.slice(0,Math.max(0,100-base.length))).slice(0,100);
+    let shuffleSeed=seed;
+    for(let i=rows.length-1;i>0;i--){shuffleSeed=(shuffleSeed*9301+49297)%233280;const j=shuffleSeed%(i+1);const tmp=rows[i];rows[i]=rows[j];rows[j]=tmp;}
+    output.exams[test.id].tests[String(testNo)]={title:topics[testNo-1]||"मिश्रित अभ्यास",questions:rows.map(q=>({q:q.q,options:q.options.slice(),answer:q.answer,explanation:getExplanation(q)}))};
+   }
+  }
+  const blob=new Blob([JSON.stringify(output,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="uk-test-series-question-backup.json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
+  status.textContent="बैकअप तैयार है। डाउनलोड हुई JSON फ़ाइल को निजी रखें।";
+ }catch(error){status.textContent="बैकअप नहीं बन पाया: "+error.message;}
+});
+</script></body></html>
