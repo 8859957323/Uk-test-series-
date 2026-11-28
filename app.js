@@ -157,7 +157,7 @@ const questions = [
 let current = [];
 let answers = [];
 let currentQuestion = 0;
-let timeLeft = 20 * 60;
+let timeLeft = 60 * 60;
 let timerId = null;
 let testFinished = false;
 let activeExamName = "General";
@@ -197,7 +197,7 @@ function renderQuestion() {
   area.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
       <strong>UK Test Series - ${activeExamName} Demo Test</strong>
-      <strong id="testTimer">20:00</strong>
+      <strong id="testTimer">60:00</strong>
     </div>
     <p>प्रश्न ${currentQuestion + 1} / ${current.length}</p>
     <div style="height:7px;background:#e8edf3;border-radius:9px;overflow:hidden"><div style="height:7px;width:${((currentQuestion+1)/current.length)*100}%;background:#18a477"></div></div>
@@ -230,7 +230,7 @@ window.startTest = function(id) {
   activeExamName = (tests.find(t => t.id === id) || {}).exam || "General";
   answers = new Array(current.length).fill(null);
   currentQuestion = 0;
-  timeLeft = 20 * 60;
+  timeLeft = 60 * 60;
   testFinished = false;
   const modal = document.getElementById("modal");
   if (!modal || !document.getElementById("testArea")) {
