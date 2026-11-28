@@ -172,7 +172,8 @@ window.nextQuestion = function() { if (currentQuestion < current.length - 1) { c
 window.previousQuestion = function() { if (currentQuestion > 0) { currentQuestion--; renderQuestion(); } };
 
 window.startTest = function(id) {
-  current = examQuestionSets[id] || questions;\n  activeExamName = (tests.find(t => t.id === id) || {}).exam || "General";
+  current = examQuestionSets[id] || questions;
+  activeExamName = (tests.find(t => t.id === id) || {}).exam || "General";
   answers = new Array(current.length).fill(null);
   currentQuestion = 0;
   timeLeft = 20 * 60;
