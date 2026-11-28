@@ -164,22 +164,24 @@ let activeExamName = "General";
 
 const closeButton = `<button onclick="closeTest()">Close</button>`;
 
-function render() {
-  const cards = document.getElementById("testCards");
-  if (!cards) return;
-  cards.innerHTML = tests.map(t => `
-    <article class="test">
-      <h3>${t.name}</h3>
-      <p>Exam: ${t.exam}</p>
-      <p>Questions: ${t.questions} (Demo Practice)</p>
-      <p>Level: ${t.level}</p>
-      <p>Price: ₹${t.price}</p>
-      <button class="btn" onclick="startTest('${t.id}')">Demo Test</button>
-      <button class="btn light" onclick="buyTest('${t.id}')">Buy Test</button>
-    </article>
-  `).join("");
-}
+const testTopics = {
+  ssc: ['इतिहास','भूगोल','भारतीय राजव्यवस्था','सामान्य विज्ञान','अर्थव्यवस्था','करंट अफेयर्स','गणित','रीजनिंग','हिंदी भाषा','अंग्रेजी भाषा','मिश्रित अभ्यास 1','मिश्रित अभ्यास 2','मिश्रित अभ्यास 3','मिश्रित अभ्यास 4','मिश्रित अभ्यास 5','मिश्रित अभ्यास 6','मिश्रित अभ्यास 7','मिश्रित अभ्यास 8','मिश्रित अभ्यास 9','फुल मॉक टेस्ट'],
+  rail: ['गणित','सामान्य बुद्धिमत्ता','रीजनिंग','सामान्य विज्ञान','भौतिक विज्ञान','रसायन विज्ञान','जीव विज्ञान','भारतीय इतिहास','भूगोल','राजव्यवस्था','करंट अफेयर्स','रेलवे सामान्य ज्ञान','मिश्रित अभ्यास 1','मिश्रित अभ्यास 2','मिश्रित अभ्यास 3','मिश्रित अभ्यास 4','मिश्रित अभ्यास 5','मिश्रित अभ्यास 6','मिश्रित अभ्यास 7','मिश्रित अभ्यास 8','फुल मॉक टेस्ट'],
+  police: ['उत्तराखंड सामान्य ज्ञान','उत्तराखंड इतिहास','उत्तराखंड भूगोल','उत्तराखंड संस्कृति','भारतीय संविधान','सामान्य ज्ञान','करंट अफेयर्स','सामान्य हिंदी','गणित','रीजनिंग','सामान्य विज्ञान','कंप्यूटर ज्ञान','पुलिस एवं कानून की मूल जानकारी','महत्वपूर्ण दिवस','खेलकूद','मिश्रित अभ्यास 1','मिश्रित अभ्यास 2','मिश्रित अभ्यास 3','मिश्रित अभ्यास 4','फुल मॉक टेस्ट'],
+  bank: ['रीजनिंग','क्वांटिटेटिव एप्टीट्यूड','अंग्रेजी भाषा','बैंकिंग जागरूकता','वित्तीय जागरूकता','करंट अफेयर्स','कंप्यूटर ज्ञान','डेटा इंटरप्रिटेशन','संख्या श्रेणी','सरलीकरण','मिश्रित अभ्यास 1','मिश्रित अभ्यास 2','मिश्रित अभ्यास 3','मिश्रित अभ्यास 4','मिश्रित अभ्यास 5','मिश्रित अभ्यास 6','मिश्रित अभ्यास 7','मिश्रित अभ्यास 8','मिश्रित अभ्यास 9','फुल मॉक टेस्ट'],
+  teaching: ['UTET Paper I बाल विकास','UTET Paper I भाषा I','UTET Paper I भाषा II','UTET Paper I गणित','UTET Paper I पर्यावरण अध्ययन','UTET Paper II बाल विकास','UTET Paper II भाषा I','UTET Paper II भाषा II','UTET Paper II गणित-विज्ञान','UTET Paper II सामाजिक अध्ययन','LT हिंदी','LT अंग्रेजी','LT गणित','LT विज्ञान','LT सामाजिक विज्ञान','शिक्षण अभिरुचि','शिक्षा एवं बाल मनोविज्ञान','उत्तराखंड सामान्य ज्ञान','मिश्रित अभ्यास','फुल मॉक टेस्ट'],
+  all: ['उत्तराखंड सामान्य ज्ञान','इतिहास','भूगोल','भारतीय संविधान','सामान्य विज्ञान','गणित','रीजनिंग','हिंदी','अंग्रेजी','करंट अफेयर्स','SSC मिश्रित','रेलवे मिश्रित','पुलिस मिश्रित','बैंकिंग मिश्रित','Teaching मिश्रित','मिश्रित अभ्यास 1','मिश्रित अभ्यास 2','मिश्रित अभ्यास 3','मिश्रित अभ्यास 4','फुल मॉक टेस्ट']
+};
 
+function render() {
+  const cards = document.getElementById('testCards');
+  if (!cards) return;
+  cards.innerHTML = tests.map(t => {
+    const topics = testTopics[t.id] || testTopics.all;
+    const buttons = topics.map((topic, index) => '<button class="btn light" style="margin:4px;white-space:normal" onclick="startTest(\'' + t.id + '\',' + (index + 1) + ')">टेस्ट ' + (index + 1) + ': ' + topic + ' (100 प्रश्न)</button>').join('');
+    return '<article class="test"><h3>' + t.name + '</h3><p>परीक्षा: ' + t.exam + '</p><p>20 टेस्ट उपलब्ध • हर टेस्ट में 100 प्रश्न</p><p>स्तर: ' + t.level + '</p><p>कीमत: ₹' + t.price + '</p><button class="btn" onclick="document.getElementById(\'topic-' + t.id + '\').style.display=document.getElementById(\'topic-' + t.id + '\').style.display===\'block\'?\'none\':\'block\'">20 टेस्ट देखें</button><div id="topic-' + t.id + '" style="display:none;margin-top:12px">' + buttons + '</div><button class="btn light" onclick="buyTest(\'' + t.id + '\')">टेस्ट खरीदें</button></article>';
+  }).join('');
+};
 function updateTimer() {
   const el = document.getElementById("testTimer");
   if (!el) return;
@@ -224,9 +226,13 @@ window.saveAnswer = function(value) { answers[currentQuestion] = Number(value); 
 window.nextQuestion = function() { if (currentQuestion < current.length - 1) { currentQuestion++; renderQuestion(); } };
 window.previousQuestion = function() { if (currentQuestion > 0) { currentQuestion--; renderQuestion(); } };
 
-window.startTest = function(id) {
-  current = examQuestionSets[id] || questions;
-  activeExamName = (tests.find(t => t.id === id) || {}).exam || "General";
+window.startTest = function(id, testNo) {
+  const test = tests.find(t => t.id === id) || {};
+  const topics = testTopics[id] || testTopics.all;
+  const topic = topics[(Number(testNo) || 1) - 1] || 'मिश्रित अभ्यास';
+  current = (examQuestionSets[id] || questions).slice();
+  if (current.length < 100) current = current.concat(makeExtraPracticeQuestions(id === 'bank' ? 301 : id === 'teaching' ? 401 : 501)).slice(0, 100);
+  activeExamName = (test.exam || 'General') + ' - टेस्ट ' + (Number(testNo) || 1) + ': ' + topic;
   answers = new Array(current.length).fill(null);
   currentQuestion = 0;
   timeLeft = 60 * 60;
